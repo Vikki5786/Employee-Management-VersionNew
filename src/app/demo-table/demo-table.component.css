@@ -1,0 +1,68 @@
+.card {
+  padding: 1rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.table-header .title {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.table-header .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.table-header input {
+  padding: 0.4rem;
+}
+
+::ng-deep .p-menu-sm .p-menuitem {
+  padding: 0.5rem 1rem;
+}
+
+.top-fixed-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.p-menubar {
+  border: none;
+  width: 100%;
+}
+
+:host ::ng-deep .p-card {
+  padding-top: 70px; /* adjust based on menubar height */
+}
+
+img.logo {
+  width: 40px;
+  height: 40px;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+body {
+  padding-top: 60px; /* Match navbar height */
+}
+
+.p-input-icon-left {
+  width: 250px;
+}

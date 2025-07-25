@@ -1,0 +1,98 @@
+/* .menu-container {
+  width: 250px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background-color: #afafd5; 
+  padding: 1rem;
+  box-shadow: 2px 0 8px rgba(212, 192, 192, 0.4);
+  z-index: 1000;
+}
+
+.menu-container {
+  border: 2px solid red;
+}
+.main-content {
+  border: 2px solid green;
+}
+
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+.menu-container {
+  background-color: #212529 !important;
+  color: #ffffff !important;
+}
+
+
+.layout {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.menu-container {
+  background-color: #2c2c3e; 
+  color: #fff;
+  padding: 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #121212;
+  color: #e0e0e0;
+} */
+
+
+
+
+
+
+
+
+
+/*  */
+/* .layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #2f2f3e;
+  padding: 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.content {
+  margin-left: 240px; 
+  padding: 2rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #1e1e2f;
+  color: #eaeaea;
+}
+ */
+
+ /* Add padding or margin if needed */
+.p-field {
+  margin-bottom: 1rem;
+}
+
+/* Fix calendar visibility in dark theme */
+/* body .p-calendar input {
+  background-color: #e4d6d6 !important;
+  color: #f40f0f !important;
+} */

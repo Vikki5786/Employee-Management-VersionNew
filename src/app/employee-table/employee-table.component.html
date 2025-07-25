@@ -1,0 +1,394 @@
+
+<div class="top-fixed-menubar">
+  <p-menubar [model]="items">
+    <!-- Start (Logo or App Icon) -->
+    <ng-template #start>
+    <img src="assets/vk-logo.jpg" width="40" height="40" alt="logo" />
+    </ng-template>
+
+    <!-- Menu Items -->
+    <ng-template #item let-item let-root="root">
+      <a pRipple class="flex items-center p-menubar-item-link">
+        <i *ngIf="item.icon" class="pi" [ngClass]="item.icon" style="margin-right: 8px"></i>
+        <span>{{ item.label }}</span>
+        <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+        <i *ngIf="item.items" class="pi" [ngClass]="root ? 'pi-angle-down' : 'pi-angle-right'" style="margin-left: auto"></i>
+      </a>
+    </ng-template>
+
+ <ng-template #end>
+  <div class="flex items-center gap-2">
+    <input type="text" pInputText placeholder="Search" class="w-36" />
+
+    <!-- Avatar Click Trigger -->
+<p-avatar
+  image="assets/vikki.jpg"
+  shape="circle"
+  size="large"
+  styleClass="cursor-pointer"
+  (click)="showMenu($event)">
+</p-avatar>
+
+<p-menu #menu [model]="profileItems" [popup]="true"></p-menu>
+
+<!-- <p-overlayPanel #profileOverlay [showCloseIcon]="false">
+  <div class="flex flex-column gap-2 p-1">
+       <button pButton type="button" label="Settings" icon="pi pi-cog"
+      class="p-button-sm p-button-text w-full text-left" (click)="onSettings()"></button>
+
+    <button pButton type="button" label="Logout" icon="pi pi-sign-out"
+      class="p-button-sm p-button-text w-full text-left" (click)="onLogout()"></button>
+      </div>
+    </p-overlayPanel> -->
+  </div>
+</ng-template>
+
+
+  </p-menubar>
+</div>
+
+
+
+
+
+<div class="flex justify-center mb-4">
+  <p-select [options]="sizes" [(ngModel)]="selectedSize" optionLabel="name" optionValue="value"
+    placeholder="Select Size" styleClass="w-48"></p-select>
+</div>
+
+<p-toast></p-toast>
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <button pButton label="Add Employee" icon="pi pi-plus" (click)="openNew()"></button>
+  </div>
+</p-toolbar>
+<p-contextmenu #cm [model]="items" (onHide)="selectedEmployees = null" />
+
+<p-togglebutton [(ngModel)]="balanceFrozen" [onIcon]="'pi pi-lock'" offIcon="pi pi-lock-open" [onLabel]="'Balance'"
+  offLabel="Balance" />
+
+<p-table #dt #dt2 [value]="employees" [(contextMenuSelection)]="selectedEmployees" [contextMenu]="cm" [columns]="cols"
+  [responsiveLayout]="'scroll'" [exportHeader]="'customExportHeader'" [reorderableColumns]="true" dataKey="employeeCode"
+  [paginator]="true" showGridlines styleClass="p-datatable-gridlines" columnResizeMode="expand" [scrollable]="true"
+  [resizableColumns]="true" [loading]="loading" [(selection)]="selectedEmployees" (onRowSelect)="onRowSelect($event)"
+  (onRowUnselect)="onRowUnselect($event)" [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [globalFilterFields]="['employeeCode', 'firstName', 'lastName', 'phoneNumber', 'emailId', 'salary', 'job', 'gender', 'dateOfBirth', 'maritalStatus', 'nationality', 'country', 'state', 'city', 'zipCode', 'address', 'designation', 'department', 'reportingManager', 'dateOfJoining', 'experience', 'status', 'skills']"
+  [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '75rem' }" [size]="selectedSize" [rows]="10"
+  [rowsPerPageOptions]="[10, 25, 50]" selectionMode="multiple"
+  [frozenColumns]="[{field: 'employeeCode', header: 'Employee Code'}]">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row>
+    <tr [pSelectableRow]="row">
+      <td>
+        <p-tableCheckbox [value]="row"></p-tableCheckbox>
+      </td>
+      <td *ngFor="let col of cols">{{ row[col.field]?.name || row[col.field] }}
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- caption slot -->
+  <ng-template #caption [ngTemplateOutlet]="caption">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="text-xl font-bold">Employee List</span>
+        <p-iconfield iconPosition="left">
+          <p-inputicon></p-inputicon>
+          <input (input)="dt.filterGlobal($event.target, 'contains')" pInputText type="text"
+            (input)="onGlobalFilter($event, dt2)" placeholder="Search Employee" />
+        </p-iconfield>
+      </div>
+      <p-button label="Export to CSV" icon="pi pi-upload" (click)="dt2.exportCSV()" />
+      
+    </div>
+  </ng-template>
+
+  <!-- Header -->
+  <ng-template #header let-columns>
+    <tr>
+      <th pResizableColumn style="width: 5rem"></th>
+      <th pFrozenColumn pResizableColumn pSortableColumn="employeeCode" style="min-width:200px">Code <p-sortIcon
+          field="employeeCode" />
+      </th>
+      <th pResizableColumn pSortableColumn="firstName">First Name <p-sortIcon field="firstName" /></th>
+      <th pResizableColumn pSortableColumn="lastName">Last Name <p-sortIcon field="lastName" /></th>
+      <th pResizableColumn pSortableColumn="emailId">Email ID <p-sortIcon field="emailId" /></th>
+      <th pResizableColumn pSortableColumn="phoneNumber">Phone Number <p-sortIcon field="phoneNumber" /></th>
+      <th pResizableColumn pSortableColumn="gender">Gender <p-sortIcon field="gender" /></th>
+      <th pResizableColumn pSortableColumn="dateOfBirth">DOB <p-sortIcon field="dateOfBirth" /></th>
+      <th pResizableColumn pSortableColumn="maritalStatus">Marital Status <p-sortIcon field="maritalStatus" /></th>
+      <th pResizableColumn pSortableColumn="nationality">Nationality <p-sortIcon field="nationality" /></th>
+      <th pResizableColumn pSortableColumn="country">Country <p-sortIcon field="country" /></th>
+      <th pResizableColumn pSortableColumn="state">State <p-sortIcon field="state" /></th>
+      <th pResizableColumn pSortableColumn="city">City <p-sortIcon field="city" /></th>
+      <th pResizableColumn pSortableColumn="zipCode">Pincode <p-sortIcon field="zipCode" /></th>
+      <th pResizableColumn pSortableColumn="address">Address <p-sortIcon field="address" /></th>
+      <th pResizableColumn pSortableColumn="designation">Designation <p-sortIcon field="designation" /></th>
+      <th pResizableColumn pSortableColumn="job">Job <p-sortIcon field="job" /></th>
+      <th pResizableColumn pSortableColumn="dateOfJoining">DOJ <p-sortIcon field="dateOfJoining" /></th>
+      <th pResizableColumn pSortableColumn="experience">Experience <p-sortIcon field="experience" /></th>
+      <th pResizableColumn pSortableColumn="salary">Salary <p-sortIcon field="salary" /></th>
+      <th pResizableColumn pSortableColumn="reportingManager">Manager <p-sortIcon field="reportingManager" /></th>
+      <th pResizableColumn pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+      <th pResizableColumn pSortableColumn="skills">Skills <p-sortIcon field="skills" /></th>
+      <th pResizableColumn pSortableColumn="profileImage">Profile Image <p-sortIcon field="profileImage" /></th>
+      <th pResizableColumn pSortableColumn="resume" alignFrozen="right" pFrozenColumn [frozen]="balanceFrozen"
+        style="min-width:200px">
+        Resume <p-sortIcon field="resume" /></th>
+    </tr>
+  </ng-template>
+
+  <!-- Body -->
+  <ng-template #body let-employee let-rowData let-columns="columns" let-index="rowIndex">
+    <tr [pSelectableRow]="employee" [pContextMenuRow]="employee"><!-- [pReorderableRow]="index"-->
+      <td></td>
+      <!-- <td><span class="pi pi-bars" pReorderableRowHandle></span></td> -->
+      <td pFrozenColumn>{{ employee.employeeCode }}</td>
+      <td>{{ employee.firstName }}</td>
+      <td>{{ employee.lastName }}</td>
+      <td>{{ employee.emailId }}</td>
+      <td>{{ employee.phoneNumber }}</td>
+      <td>{{ employee.gender }}</td>
+      <td>{{ employee.dateOfBirth }}</td>
+      <td>{{ employee.maritalStatus }}</td>
+      <td>{{ employee.nationality }}</td>
+      <td>{{ employee.country?.name || employee.country }}</td>
+      <td>{{ employee.state?.name || employee.state }}</td>
+      <td>{{ employee.city?.name || employee.city }}</td>
+      <td>{{ employee.zipCode }}</td>
+      <td>{{ employee.address }}</td>
+      <td>{{ employee.designation }}</td>
+      <td>{{ employee.job }}</td>
+      <td>{{ employee.dateOfJoining }}</td>
+      <td>{{ employee.experience }}</td>
+      <td>{{ employee.salary }}</td>
+      <td>{{ employee.reportingManager }}</td>
+      <td>{{ employee.status }}</td>
+      <td>{{ employee.skills?.join(', ') }}</td>
+      <td>
+        <img *ngIf="employee.profileImage" [src]="employee.profileImage" alt="Profile" width="50" height="50" />
+      </td>
+      <td alignFrozen="right" pFrozenColumn [frozen]="balanceFrozen">
+        <a *ngIf="employee.resume" [href]="employee.resume" target="_blank">View Resume</a>
+      </td>
+
+    </tr>
+  </ng-template>
+
+  <!-- Footer -->
+  <ng-template #footer>
+    <tr>
+      <td colspan="24">In total there are {{ employees ? employees.length : 0 }} employees.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-contextMenu #cm [model]="menuItems"></p-contextMenu>
+
+<p-dialog header="{{ editingEmployee ? 'Edit' : 'Add' }} Employee" [(visible)]="employeeDialog" header="Employee Form"
+  [modal]="true" [(visible)]="displayDialog" [closable]="false" [style]="{ width: '600px' }" [draggable]="false"
+  [resizable]="false"
+  [contentStyle]="{ 'padding': '0', 'display': 'flex', 'flexDirection': 'column', 'height': '500px' }">
+
+  <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()"
+    style="display: flex; flex-direction: column; height: 100%;">
+
+    <!-- Scrollable content area -->
+    <div style="overflow: auto; flex: 1; padding: 1rem;" style="flex: 1; overflow-y: auto; padding: 1rem;">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+          <label for="employeeCode">Employee Code</label>
+          <input id="employeeCode" type="text" pInputText formControlName="employeeCode">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" pInputText formControlName="firstName">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" pInputText formControlName="lastName">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="emailId">EmailId</label>
+          <input id="emailId" type="email" pInputText formControlName="emailId">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="phoneNumber">Phone Number</label>
+          <input id="phoneNumber" type="number" pInputText formControlName="phoneNumber">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="gender">Gender</label>
+          <p-dropdown [options]="genders" formControlName="gender" placeholder="Select Gender"></p-dropdown>
+        </div>
+        <!-- Date of Birth -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="dob">Date of Birth</label>
+          <p-datepicker formControlName="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true"
+            [style]="{ width: '100%' }" inputId="dob" placeholder="Select Date"></p-datepicker>
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="maritalStatus">Marital Status</label>
+          <p-dropdown [options]="maritalStatusOptions" formControlName="maritalStatus"
+            placeholder="Select"></p-dropdown>
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="nationality">Nationality</label>
+          <input id="nationality" type="text" pInputText formControlName="nationality">
+        </div>
+
+        <!-- Country -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="country">Country</label>
+          <p-dropdown [options]="countryOptions" optionLabel="name" placeholder="Select Country"
+            (onChange)="onCountryChange($event.value)" formControlName="country">
+          </p-dropdown>
+        </div>
+
+        <!-- State -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="state">State</label>
+          <p-dropdown [options]="stateOptions" optionLabel="name" placeholder="Select State"
+            (onChange)="onStateChange($event.value)" formControlName="state" [disabled]="!stateOptions.length">
+          </p-dropdown>
+        </div>
+
+        <!-- City -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="city">City</label>
+          <p-dropdown [options]="cityOptions" optionLabel="name" placeholder="Select City"
+            (onChange)="onCityChange($event.value)" formControlName="city" [disabled]="!cityOptions.length">
+          </p-dropdown>
+        </div>
+
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="zipCode">Pincode</label>
+          <input id="zipCode" type="text" pInputText formControlName="zipCode">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="address">Address</label>
+          <textarea id="address" rows="3" pInputTextarea formControlName="address"></textarea>
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="designation">Designation</label>
+          <input id="designation" type="text" pInputText formControlName="designation">
+        </div>
+
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="job">Job</label>
+          <input id="job" type="text" pInputText formControlName="job">
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="dateOfJoining">Date of Joining</label>
+          <p-datepicker formControlName="dateOfJoining" dateFormat="yy-mm-dd" [showIcon]="true"
+            placeholder="Select Date"></p-datepicker>
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="experience">Experience</label>
+          <input id="experience" type="text" pInputText formControlName="experience">
+        </div>
+
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="salary">Salary</label>
+          <input id="salary" type="number" pInputText formControlName="salary">
+        </div>
+
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="reportingManager">Reporting Manager</label>
+          <input id="reportingManager" type="text" pInputText formControlName="reportingManager">
+        </div>
+
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="status">Status</label>
+          <p-select formControlName="status" [options]="statusOptions" optionLabel="label" optionValue="value"
+            placeholder="Select Status">
+          </p-select>
+        </div>
+
+        <div class="p-field p-col-12 p-md-6">
+          <label for="skills">Skills</label>
+          <p-autoComplete formControlName="skills" [suggestions]="filteredSkills"
+            (completeMethod)="filterSkills($event)" [multiple]="true" [forceSelection]="false" [dropdown]="true"
+            placeholder="Enter Skills">
+          </p-autoComplete>
+        </div>
+
+        <!-- Profile Image Upload -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="profileImage">Profile Image</label>
+          <p-fileUpload #profileUploader name="profileImage" customUpload="true"
+            (uploadHandler)="onProfileImageUpload($event)" [auto]="true" [maxFileSize]="5000000"
+            accept=".png,.jpeg,.jpg">
+          </p-fileUpload>
+        </div>
+
+        <!-- Resume Upload -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="resume">Resume</label>
+          <p-fileUpload #resumeUploader name="resume" customUpload="true" mode="basic" [multiple]="true"
+            [maxFileSize]="10000000" accept=".pdf,.doc,.docx" [auto]="true" chooseLabel="Upload"
+            (uploadHandler)="onResumeUpload($event)">
+          </p-fileUpload>
+        </div>
+
+        <!-- Preview Profile Images -->
+        <div *ngIf="uploadedProfileImages.length > 0">
+          <h4>Profile Image Preview</h4>
+          <ul>
+            <li *ngFor="let file of uploadedProfileImages">
+              {{ file.name }}
+              <img [src]="file.previewUrl" alt="Preview" width="100" *ngIf="file.type.startsWith('image/')">
+            </li>
+          </ul>
+        </div>
+
+        <!-- Preview Resumes -->
+        <div *ngIf="uploadedResumes.length > 0">
+          <h4>Resume Preview</h4>
+          <ul>
+            <li *ngFor="let file of uploadedResumes">{{ file.name }}</li>
+          </ul>
+        </div>
+        <div *ngFor="let resume of uploadedResumes">
+          <p>{{ resume.name }} ({{ resume.size }} bytes)</p>
+          <embed *ngIf="resume.type === 'application/pdf'" [src]="resumePreviewUrl(resume)" width="100%"
+            height="200px" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Fixed Footer -->
+    <div style="padding: 1rem; border-top: 1px solid #ddd; text-align: right;">
+      <button pButton type="submit" label="Save" [disabled]="employeeForm.invalid"></button>
+      <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="cancelEmployee()"></button>
+    </div>
+  </form>
+</p-dialog>
