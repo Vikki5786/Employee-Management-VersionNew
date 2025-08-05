@@ -385,10 +385,10 @@ export class EmployeeTableComponent implements OnInit {
     this.setProfileUrl(exampleUrl);
 
 
-    this.items = [
-      { label: 'View', icon: 'pi pi-fw pi-search', command: () => this.viewEmployee(this.selectedEmployee!) },
-      { label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteEmployee(this.selectedEmployee!) }
-    ];
+    // this.items = [
+    //   { label: 'View', icon: 'pi pi-fw pi-search', command: () => this.viewEmployee(this.selectedEmployee!) },
+    //   { label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteEmployee(this.selectedEmployee!) }
+    // ];
 
     this.sizes = [
       { name: 'Small', value: 'small' },

@@ -62,12 +62,12 @@
     <button pButton label="Add Employee" icon="pi pi-plus" (click)="openNew()"></button>
   </div>
 </p-toolbar>
-<p-contextmenu #cm [model]="items" (onHide)="selectedEmployees = null" />
+<!-- <p-contextmenu #cm [model]="items" (onHide)="selectedEmployees = null" /> -->
 
 <p-togglebutton [(ngModel)]="balanceFrozen" [onIcon]="'pi pi-lock'" offIcon="pi pi-lock-open" [onLabel]="'Balance'"
   offLabel="Balance" />
 
-<p-table #dt #dt2 [value]="employees" [(contextMenuSelection)]="selectedEmployees" [contextMenu]="cm" [columns]="cols"
+<p-table #dt #dt2 [value]="employees"  [columns]="cols"
   [responsiveLayout]="'scroll'" [exportHeader]="'customExportHeader'" [reorderableColumns]="true" dataKey="employeeCode"
   [paginator]="true" showGridlines styleClass="p-datatable-gridlines" columnResizeMode="expand" [scrollable]="true"
   [resizableColumns]="true" [loading]="loading" [(selection)]="selectedEmployees" (onRowSelect)="onRowSelect($event)"
@@ -77,7 +77,7 @@
   [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '75rem' }" [size]="selectedSize" [rows]="10"
   [rowsPerPageOptions]="[10, 25, 50]" selectionMode="multiple"
   [frozenColumns]="[{field: 'employeeCode', header: 'Employee Code'}]">
-
+<!-- <p-table [(contextMenuSelection)]="selectedEmployees" [contextMenu]="cm"> </p-table> -->
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3rem">
@@ -150,10 +150,10 @@
         Resume <p-sortIcon field="resume" /></th>
     </tr>
   </ng-template>
-
   <!-- Body -->
   <ng-template #body let-employee let-rowData let-columns="columns" let-index="rowIndex">
-    <tr [pSelectableRow]="employee" [pContextMenuRow]="employee"><!-- [pReorderableRow]="index"-->
+    <tr [pSelectableRow]="employee" ><!-- [pReorderableRow]="index"--> <!-- [pContextMenuRow]="employee" -->
+
       <td></td>
       <!-- <td><span class="pi pi-bars" pReorderableRowHandle></span></td> -->
       <td pFrozenColumn>{{ employee.employeeCode }}</td>

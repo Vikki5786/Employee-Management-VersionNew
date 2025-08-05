@@ -34,16 +34,17 @@ import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
 import { RippleModule } from 'primeng/ripple';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+// import { EmployeeFormComponent } from './employee-form/employee-form.component';
 
 @NgModule({
   imports: [
-    BrowserModule,DemoTableComponent,HttpClientModule,DatePickerModule,PanelMenuModule,
-    ButtonModule,ToolbarModule,DialogModule,CascadeSelectModule,ContextMenuModule,
-    FormsModule,CommonModule,
-    AutoCompleteModule,CalendarModule,
+    BrowserModule, DemoTableComponent, HttpClientModule, DatePickerModule, PanelMenuModule,
+    ButtonModule, ToolbarModule, DialogModule, CascadeSelectModule, ContextMenuModule,
+    FormsModule, CommonModule,
+    AutoCompleteModule, CalendarModule,
     InputTextModule,
-    ButtonModule,
-    TableModule,OverlayPanelModule,
+    ButtonModule, DemoTableComponent,
+    TableModule, OverlayPanelModule,
     ToastModule,
     SelectButtonModule,
     ToggleButtonModule,
@@ -55,10 +56,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     DropdownModule,
     BrowserAnimationsModule,
     CardModule,
-ReactiveFormsModule,SelectButton,MenubarModule,BadgeModule,AvatarModule,RippleModule,InputTextModule
+    ReactiveFormsModule, SelectButton, MenubarModule, BadgeModule, AvatarModule, RippleModule, InputTextModule
 
   ],
   declarations: [],
   bootstrap: []
 })
-export class AppModule {}
+export class AppModule { }
