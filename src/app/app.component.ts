@@ -16,8 +16,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     RouterOutlet, 
     // PanelMenu,
-    CommonModule,
-    SelectModule,FormsModule,TableModule,  CommonModule
+    
+    SelectModule,FormsModule,TableModule
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

@@ -164,7 +164,17 @@ states: any[] = [];
   }
 
   ngOnInit(): void {
-    this.getAllEmployees();
+
+    this.employeeService.getAllEmployees().subscribe({
+    next: (data) => {
+      this.employees = data;
+    },
+    error: (err) => {
+      console.error('Failed to fetch employees', err);
+    }
+  });
+
+
     this.items = [
       { label: 'Home', icon: 'pi pi-home', routerLink: '/dashboard' },
       { label: 'Profile', icon: 'pi pi-user', routerLink: '/profile' },
